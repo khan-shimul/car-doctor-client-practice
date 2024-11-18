@@ -14,7 +14,7 @@ const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  console.log("user state", user);
+  //   console.log("user state", user);
   const [loading, setLoading] = useState(true);
 
   //   Register a new user

@@ -9,7 +9,7 @@ const Services = () => {
   } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
-      const result = await fetch("services.json");
+      const result = await fetch("http://localhost:5000/services");
       return result.json();
     },
   });
