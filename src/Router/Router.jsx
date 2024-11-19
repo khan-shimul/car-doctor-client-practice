@@ -6,6 +6,7 @@ import Login from "../pages/Register/Login/Login";
 import Register from "../pages/Register/Register/Register";
 import Checkout from "../pages/Checkout/Checkout";
 import ProtectRoute from "./ProtectRoute";
+import Booking from "../pages/Booking/Booking";
 
 export const Router = createBrowserRouter([
   {
@@ -26,6 +27,14 @@ export const Router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/service/${params.id}`),
+      },
+      {
+        path: "/booking",
+        element: (
+          <ProtectRoute>
+            <Booking />
+          </ProtectRoute>
+        ),
       },
       {
         path: "/login",

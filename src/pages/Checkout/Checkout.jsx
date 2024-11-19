@@ -1,20 +1,48 @@
 import { useLoaderData } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const Checkout = () => {
-  const { title, price } = useLoaderData();
+  const { title, price, img } = useLoaderData();
   const { user, loading } = useAuth();
+
   if (loading)
     return (
       <span className="loading loading-spinner loading-lg flex mx-auto"></span>
     );
+
+  const checkoutHandler = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = user.email;
+    const date = form.date.value;
+    const message = form.message.value;
+    const bookingInfo = {
+      title,
+      price,
+      img,
+      email,
+      date,
+      message,
+    };
+    // Send booking to backend
+    axios
+      .post("http://localhost:5000/booking", bookingInfo)
+      .then((res) => {
+        // console.log(res.data);
+        if (res.data.insertedId) {
+          alert("Successfully Booked Your Service");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
       <div className="hero bg-base-200 mb-10 min-h-screen rounded-md">
         <div className="hero-content w-full p-10">
           <div className="card bg-base-100 w-full">
-            <form className="card-body">
+            <form onSubmit={checkoutHandler} className="card-body">
               <div className="flex flex-col md:flex-row gap-7">
                 <div className="form-control w-full">
                   <label className="label">
@@ -33,6 +61,7 @@ const Checkout = () => {
                   </label>
                   <input
                     type="date"
+                    name="date"
                     placeholder="password"
                     className="input input-bordered"
                     required
@@ -71,6 +100,7 @@ const Checkout = () => {
                   </div>
                   <textarea
                     className="textarea textarea-bordered h-28"
+                    name="message"
                     placeholder="message"
                   ></textarea>
                 </label>
