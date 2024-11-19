@@ -1,14 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/images/login/login.svg";
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../../hooks/useAuth";
+import { useState } from "react";
 
 const Login = () => {
+  const [spinner, setSpinner] = useState(false);
   const { loginUser } = useAuth();
+  const location = useLocation();
+  // console.log(location.state.from.pathname);
+  const navigate = useNavigate();
 
+  // User login handler
   const handleLogin = (e) => {
     e.preventDefault();
+    setSpinner(true);
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
@@ -16,11 +23,22 @@ const Login = () => {
     loginUser(email, password)
       .then((result) => {
         console.log("successfully login", result.user);
+        navigate(location.state ? location.state.from.pathname : "/");
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => {
+        console.log(error.message);
+        setSpinner(false);
+      });
   };
+
+  if (spinner) {
+    return (
+      <span className="loading loading-spinner loading-lg flex mx-auto"></span>
+    );
+  }
+
   return (
-    <div className="hero min-h-screen">
+    <div className={`hero min-h-screen`}>
       <div className="hero-content flex flex-col lg:flex-row gap-5 w-full">
         <div className="w-full lg:w-1/2 flex justify-center">
           <img className="w-3/5" src={loginImg} alt="" />
