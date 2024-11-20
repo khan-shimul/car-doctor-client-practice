@@ -9,14 +9,15 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { app } from "../firebase/firebase.config";
-import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   //   console.log("user state", user);
   const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
 
   //   Register a new user
   const registerUser = (email, password) => {
@@ -42,23 +43,18 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       setLoading(false);
       console.log("Observing current user", currentUser);
-      // const userEmail = currentUser?.email || user?.email;
       const loggedUser = { email: currentUser?.email };
       // Request for jwt token for a user if user exist
       if (currentUser) {
-        axios
-          .post("http://localhost:5000/jwt", loggedUser, {
-            withCredentials: true,
-          })
+        axiosSecure
+          .post("/jwt", loggedUser)
           .then((res) => {
             console.log(res.data);
           })
           .catch((error) => console.log(error));
       } else {
-        axios
-          .post("http://localhost:5000/logout", loggedUser, {
-            withCredentials: true,
-          })
+        axiosSecure
+          .post("/logout", loggedUser)
           .then((res) => {
             console.log(res.data);
           })
@@ -68,7 +64,7 @@ const AuthProvider = ({ children }) => {
     return () => {
       return unsubscribe();
     };
-  }, []);
+  }, [axiosSecure]);
 
   const userInfo = {
     user,

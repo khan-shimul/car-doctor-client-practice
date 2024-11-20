@@ -1,10 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Checkout = () => {
   const { title, price, img } = useLoaderData();
   const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   if (loading)
     return (
@@ -26,8 +27,8 @@ const Checkout = () => {
       message,
     };
     // Send booking to backend
-    axios
-      .post("http://localhost:5000/booking", bookingInfo)
+    axiosSecure
+      .post("/booking", bookingInfo)
       .then((res) => {
         // console.log(res.data);
         if (res.data.insertedId) {

@@ -1,27 +1,26 @@
-import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import BookingItem from "./BookingItem";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Booking = () => {
   const { user } = useAuth();
   const [booking, setBooking] = useState([]);
+  const axiosSecure = useAxiosSecure();
   // Get booking by query
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/booking?email=${user?.email}`, {
-        withCredentials: true,
-      })
+    axiosSecure
+      .get(`/booking?email=${user?.email}`)
       .then((res) => {
         setBooking(res.data);
       })
       .catch((error) => console.log(error));
-  }, [user]);
+  }, [user, axiosSecure]);
 
   //   Booking Item Delete Handler
   const bookingItemDeleteHandler = (id) => {
-    axios
-      .delete(`http://localhost:5000/booking/${id}`)
+    axiosSecure
+      .delete(`/booking/${id}`)
       .then((res) => {
         if (res.data.deletedCount) {
           alert("Deleted");
@@ -34,8 +33,8 @@ const Booking = () => {
 
   //   Make confirm Status
   const confirmHandler = (id) => {
-    axios
-      .patch(`http://localhost:5000/booking/${id}`, { status: "confirm" })
+    axiosSecure
+      .patch(`/booking/${id}`, { status: "confirm" })
       .then((res) => {
         if (res.data.modifiedCount) {
           const remaining = booking.filter((item) => item._id !== id);
