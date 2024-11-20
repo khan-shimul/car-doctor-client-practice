@@ -23,7 +23,7 @@ const Login = () => {
     loginUser(email, password)
       .then((result) => {
         console.log("successfully login", result.user);
-        navigate(location.state ? location.state.from.pathname : "/");
+        // navigate(location.state ? location.state.from.pathname : "/");
       })
       .catch((error) => {
         console.log(error.message);
@@ -31,11 +31,11 @@ const Login = () => {
       });
   };
 
-  if (spinner) {
-    return (
-      <span className="loading loading-spinner loading-lg flex mx-auto"></span>
-    );
-  }
+  // if (spinner) {
+  //   return (
+  //     <span className="loading loading-spinner loading-lg flex mx-auto"></span>
+  //   );
+  // }
 
   return (
     <div className={`hero min-h-screen`}>

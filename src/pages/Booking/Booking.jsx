@@ -9,7 +9,9 @@ const Booking = () => {
   // Get booking by query
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/booking?email=${user?.email}`)
+      .get(`http://localhost:5000/booking?email=${user?.email}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setBooking(res.data);
       })
