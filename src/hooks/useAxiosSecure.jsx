@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../Providers/AuthProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://car-doctor-server-practice-seven.vercel.app",
   withCredentials: true,
 });
 

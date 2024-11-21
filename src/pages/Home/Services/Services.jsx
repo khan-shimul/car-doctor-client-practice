@@ -9,7 +9,9 @@ const Services = () => {
   } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
-      const result = await fetch("http://localhost:5000/services");
+      const result = await fetch(
+        "https://car-doctor-server-practice-seven.vercel.app/services"
+      );
       return result.json();
     },
   });

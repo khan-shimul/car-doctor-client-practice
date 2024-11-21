@@ -26,7 +26,9 @@ export const Router = createBrowserRouter([
           </ProtectRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/service/${params.id}`),
+          fetch(
+            `https://car-doctor-server-practice-seven.vercel.app/service/${params.id}`
+          ),
       },
       {
         path: "/booking",
