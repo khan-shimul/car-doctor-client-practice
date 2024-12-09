@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../Providers/AuthProvider";
 
-const axiosSecure = axios.create({
-  baseURL: "https://car-doctor-server-practice-seven.vercel.app",
+export const axiosSecure = axios.create({
+  baseURL: "http://localhost:5000",
   withCredentials: true,
 });
 
@@ -18,11 +18,10 @@ const useAxiosSecure = () => {
         // console.log("error in the interceptor", error.response);
         if (error.response.status === 401 || error.response.status === 403) {
           console.log("Log out the user");
-          signOut(auth)
-            .then(() => {
-              console.log("logged out");
-            })
-            .catch((error) => console.log(error.message));
+          signOut(auth).then(() => {
+            console.log("logged out");
+          });
+          // .catch((error) => console.log(error.message));
         }
       }
     );

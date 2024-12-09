@@ -1,20 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
 import ServiceCard from "./ServiceCard";
+import { useState } from "react";
+import useServices from "../../../hooks/useServices";
 
 const Services = () => {
-  const {
-    isPending,
-    error,
-    data: services,
-  } = useQuery({
-    queryKey: ["services"],
-    queryFn: async () => {
-      const result = await fetch(
-        "https://car-doctor-server-practice-seven.vercel.app/services"
-      );
-      return result.json();
-    },
-  });
+  const [asc, setAsc] = useState(true);
+  const [search, setSearch] = useState("");
+  const [isPending, error, services] = useServices(asc, search);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchText = e.target.search.value;
+    setSearch(searchText);
+  };
+
   if (isPending) {
     return (
       <div className="flex mx-auto">
@@ -34,6 +32,18 @@ const Services = () => {
           humour, or randomised words which don not look even slightly
           believable.{" "}
         </p>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            name="search"
+            placeholder="Type here"
+            className="input input-bordered w-full max-w-xs"
+          />
+          <input type="submit" value="Search" className="btn ml-2" />
+        </form>
+        <button onClick={() => setAsc(!asc)} className="btn btn-secondary">
+          {asc ? "Price: Hight to Low" : "Price: Low to Hight"}
+        </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-7">
         {services.map((service) => (
